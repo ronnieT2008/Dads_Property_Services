@@ -5,12 +5,10 @@ import Navbar from "@/components/navbar/LoggedNavbar";
 export default function Page() {
     return (
         <>
-            <header>
-                <Navbar />
-            </header>
-            <main>
-                <div className="flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-
+            <Navbar />
+            <main className="ml-auto w-10/12 ">
+                <div className="">
+                    <h1>Dashboard</h1>
                 </div>
             </main>
         </>

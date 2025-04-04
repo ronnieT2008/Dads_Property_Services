@@ -7,10 +7,9 @@ export const middleware = async (req) => {
     const token = req.cookies.get('token')?.value || '';
 
     if (!isPublicPath && !token) {
-        return NextResponse.redirect(new URL('/', req.url))
+        // return NextResponse.redirect(new URL('/', req.url))
     } else if (isPublicPath && !isTokenExpired(token)) {
-        // console.log("public path and token");
-        return NextResponse.redirect(new URL('/dashboard', req.url))
+        // return NextResponse.redirect(new URL('/dashboard', req.url))
     }
 }
 
