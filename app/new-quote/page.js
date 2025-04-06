@@ -7,17 +7,16 @@ import { useState } from "react";
 export default function Page() {
     const [service, setService] = useState({ type: "painting", active: false });
     const [customerInputs, setCustomerInputs] = useState({
-        name: null,
-        phone: null,
-        address: null
+        name: '',
+        phone: '',
+        address: ''
     });
     const [serviceInputs, setServiceInputs] = useState({});
 
-    const customerProps = { service, setService, inputs: customerInputs, setInputs: setCustomerInputs };
-    const serviceProps = { service, setService, inputs: serviceInputs, setInputs: setServiceInputs };
+    const customerProps = { service, setService, customerInputs, setCustomerInputs };
+    const serviceProps = { service, setService, serviceInputs, setServiceInputs };
 
     console.log(serviceInputs);
-
 
     return (
         <>
