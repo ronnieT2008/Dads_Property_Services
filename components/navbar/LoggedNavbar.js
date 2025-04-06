@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from 'next/navigation'
+import Link from "next/link";
 
 export const navLinks = [
     {
@@ -21,26 +22,30 @@ export const navLinks = [
     },
 ]
 
-const Navbar = () => {
-    const [sideNav, setSideNav] = useState(true);
+const Navbar = ({ isTabletOrMobile }) => {
+    const [sideNav, setSideNav] = useState();
     const pathname = usePathname()
+
+    useEffect(() => {
+        setSideNav(!isTabletOrMobile);
+    }, [])
 
     return (
         <>
             {/* sidenav */}
-            <div className={`absolute inset-0 h-screen md:w-2/12 w-full ease-in-out duration-300 shadow-md ${sideNav ? "translate-x-0" : "translate-x-[-100%]"} bg-slate-200 pt-25`}>
+            <div className={`absolute inset-0 h-screen w-full xl:w-2/12 ease-in-out duration-300 shadow-md ${sideNav ? "translate-x-0" : "translate-x-[-100%]"} bg-slate-200 pt-25`}>
                 {navLinks.map(({ name, href }, index) => (
                     <div key={index}>
-                        <a href={href} className={`text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer ${pathname === href ? "bg-slate-300" : ""}`}>
+                        <Link href={href} className={`text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer ${pathname === href ? "bg-slate-300" : ""}`}>
                             <Image src={navLinks[index].src} width={20} height={20} alt={name} className="inline mr-2 mb-1" />
                             {name}
-                        </a>
+                        </Link>
                     </div>
                 ))}
             </div>
 
             {/* top nav */}
-            <nav className="w-full bg-slate-100 p-4 shadow-md h-1.5/12 sticky">
+            <nav className="w-full bg-slate-100 p-4 pr-4 shadow-md h-1.5/12 sticky">
                 {/* sidenav button */}
                 <div className="inline">
                     <button type="button" className="cursor-pointer focus:outline-none h-full" onClick={() => setSideNav(!sideNav)}>
@@ -50,9 +55,9 @@ const Navbar = () => {
 
                 {/* add quote button */}
                 <div className="inline ml-auto">
-                    <a href="/new-quote" className="float-right focus:outline-none h-full">
+                    <Link href="/new-quote" className="float-right focus:outline-none h-full">
                         <Image src={`${pathname === "/new-quote" ? "/new_fill.svg" : "/new_outline.svg"}`} width={40} height={40} alt="burger" onMouseOver={(e) => { pathname !== "new_quote" && (e.target.src = "/new_fill.svg") }} className="my-auto" />
-                    </a>
+                    </Link>
                 </div>
             </nav >
         </>

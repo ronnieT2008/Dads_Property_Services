@@ -93,12 +93,6 @@ export default function Page() {
                         </div>
                     </form>
                     <span className="text-lg font-bold text-red-600">{errorMessage}</span>
-                    <p className="mt-2 text-center text-md text-gray-500">
-                        Don&apos;t have an account?{' '}
-                        <a href="/signup" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                            Sign up
-                        </a>
-                    </p>
                 </div>
             </div>
         </div>

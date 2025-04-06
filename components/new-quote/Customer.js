@@ -9,7 +9,7 @@ const Customer = ({ service, setService, customerInputs, setCustomerInputs }) =>
     }
 
     return (
-        <div className="w-full h-full grid grid-rows-2">
+        <div className="w-full h-full">
             <div className="px-4">
                 <h1 className="text-3xl font-medium">Customer</h1>
                 <div className="mt-8">
@@ -31,21 +31,21 @@ const Customer = ({ service, setService, customerInputs, setCustomerInputs }) =>
                     />
                 </div>
             </div>
-            <div className="px-4 mt-20">
+            <div className="px-4 mt-8">
                 <h1 className="text-3xl font-medium">Customer</h1>
-                <div className="grid grid-cols-3 h-4/12 gap-5">
+                <div className="grid xl:grid-cols-3 h-4/12 xl:gap-5">
                     <div className={`mt-8 w-full rounded-md grid place-items-center cursor-pointer py-2 ${service.type === "painting" ? "bg-blue-950 text-white" : "bg-slate-50"}`}>
                         <h1 className="text-2xl font-medium mb-1" id="painting" onClick={() => setService({ ...service, service: "painting" })}>Painting</h1>
                     </div>
-                    <div className="mt-8 w-full bg-slate-50 rounded-md grid place-items-center cursor-pointer">
-                        <h1 className="text-2xl font-medium mb-1" id="">Painting</h1>
+                    <div className="xl:mt-8 mt-3 w-full bg-slate-50 rounded-md grid place-items-center cursor-pointer py-2">
+                        <h1 className="text-2xl font-medium mb-1" id="">Service 2</h1>
                     </div>
-                    <div className="mt-8 w-full bg-slate-50 rounded-md grid place-items-center cursor-pointer">
-                        <h1 className="text-2xl font-medium mb-1" id="">Painting</h1>
+                    <div className="xl:mt-8 mt-3 w-full bg-slate-50 rounded-md grid place-items-center cursor-pointer py-2">
+                        <h1 className="text-2xl font-medium mb-1" id="">Service 3</h1>
                     </div>
                 </div>
             </div>
-            <div className="px-4">
+            <div className="px-4 w-full h-16 p-2 mt-4">
                 <button className={`bg-slate-600 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl ${inputs.name && inputs.address && inputs.phone ? "" : "opacity-70"}`}
                     onClick={() => {
                         inputs.name && inputs.address && inputs.phone && service && handleNext();
