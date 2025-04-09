@@ -45,18 +45,21 @@ const Navbar = ({ isTabletOrMobile }) => {
             </div>
 
             {/* top nav */}
-            <nav className="w-full bg-slate-100 p-4 pr-4 shadow-md h-1.5/12 sticky">
+            <nav className="w-full bg-slate-100 p-4 pr-4 shadow-md h-1.5/12 sticky grid grid-cols-2">
                 {/* sidenav button */}
-                <div className="inline">
-                    <button type="button" className="cursor-pointer focus:outline-none h-full" onClick={() => setSideNav(!sideNav)}>
+                <div className="inline-block">
+                    <button type="button" className="cursor-pointer focus:outline-none h-full xl:hidden" onClick={() => setSideNav(!sideNav)}>
                         <Image src="/burger.svg" width={40} height={40} alt="burger" className="my-auto" />
                     </button>
+                    <div className="hidden xl:inline">
+                        <Image src="/logo.png" width={80} height={80} alt="logo" className="ml-16" />
+                    </div>
                 </div>
 
                 {/* add quote button */}
-                <div className="inline ml-auto">
-                    <Link href="/new-quote" className="float-right focus:outline-none h-full">
-                        <Image src={`${pathname === "/new-quote" ? "/new_fill.svg" : "/new_outline.svg"}`} width={40} height={40} alt="burger" onMouseOver={(e) => { pathname !== "new_quote" && (e.target.src = "/new_fill.svg") }} className="my-auto" />
+                <div className="inline-block">
+                    <Link href="/new-quote" className="focus:outline-none h-full">
+                        <Image src={`${pathname === "/new-quote" ? "/new_fill.svg" : "/new_outline.svg"}`} width={40} height={40} alt="burger" onMouseOver={(e) => { pathname !== "new_quote" && (e.target.src = "/new_fill.svg") }} className="ml-auto my-auto" />
                     </Link>
                 </div>
             </nav >
