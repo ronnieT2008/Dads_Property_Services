@@ -7,9 +7,9 @@ export const middleware = async (req) => {
     const token = req.cookies.get('token')?.value || '';
 
     if (!isPublicPath && !token) {
-        // return NextResponse.redirect(new URL('/', req.url))
+        return NextResponse.redirect(new URL('/login', req.url))
     } else if (isPublicPath && !isTokenExpired(token)) {
-        // return NextResponse.redirect(new URL('/dashboard', req.url))
+        return NextResponse.redirect(new URL('/dashboard', req.url))
     }
 }
 
@@ -25,7 +25,9 @@ const isTokenExpired = (token) => {
 export const config = {
     matcher: [
         '/',
-        '/dashboard',
         '/login',
+        '/dashboard',
+        '/quotes',
+        '/new-quote'
     ],
 }

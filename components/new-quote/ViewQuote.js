@@ -1,12 +1,16 @@
 "use client";
+import axios from "axios";
+import { Router, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ViewQuote = ({ customerInputs, serviceInputs, service, setService }) => {
     const [quote, setQuote] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (serviceInputs) {
             const {
+                roomName,
                 ceilingHeight,
                 walls,
                 ceilingType,
@@ -52,6 +56,14 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService }) => {
                 accentWallArea * prices.accentWall;
 
             setQuote({
+                roomName,
+                ceilingHeight: parsedHeight,
+                ceilingType,
+                doorFrames: parseInt(doorFrames) || 0,
+                windowFrames: parseInt(windowFrames) || 0,
+                doorsNum: parseInt(doorsNum) || 0,
+                wallsNum: parseInt(wallsNum) || 0,
+                wallsLength: parseFloat(wallsLength) || 0,
                 wallArea: wallAreas.toFixed(2),
                 ceilingArea: ceilingArea.toFixed(2),
                 accentWallArea: accentWallArea.toFixed(2),
@@ -62,7 +74,7 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService }) => {
 
     if (!serviceInputs) return <p className="p-6 text-xl">No service input found.</p>;
 
-    const newQuote = () => {
+    const newQuote = async () => {
         try {
             const customer = {
                 name: customerInputs.name,
@@ -70,6 +82,11 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService }) => {
                 address: customerInputs.address,
                 quotes: [quote],
             };
+
+            const res = await axios.post("/api/customer/new", customer);
+
+            if (res.status === 200) router.push("/dashboard");
+
         } catch (err) {
             console.log(err);
         }
