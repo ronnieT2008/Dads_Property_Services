@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-const Customer = ({ service, setService, customerInputs, setCustomerInputs }) => {
+const Customer = ({ setOption, service, setService, customerInputs, setCustomerInputs }) => {
     const [inputs, setInputs] = useState(customerInputs);
     const handleNext = () => {
         setService({ ...service, active: true });
@@ -46,10 +46,11 @@ const Customer = ({ service, setService, customerInputs, setCustomerInputs }) =>
                 </div>
             </div>
             <div className="px-4 w-full mt-4 grid">
-                <button className={`bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl ${inputs.name && inputs.address && inputs.phone ? "" : "opacity-70"}`}
+                <button className={`bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl ${inputs.name && inputs.address && inputs.phone ? "" : "opacity-70"} mb-2`}
                     onClick={() => {
                         inputs.name && inputs.address && inputs.phone && service && handleNext();
                     }}>Next</button>
+                <button className={`bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => setOption({ active: true, quote: false })}>Back</button>
             </div>
         </div>
     )
