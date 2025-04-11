@@ -11,7 +11,8 @@ export default function Page() {
     const [customerInputs, setCustomerInputs] = useState({
         name: '',
         phone: '',
-        address: ''
+        address: '',
+        id: '',
     });
     const [option, setOption] = useState({ active: true, quote: false });
     const [serviceInputs, setServiceInputs] = useState({});
@@ -39,12 +40,12 @@ export default function Page() {
                                 <>
                                     {!service.active && !service.quote && <Customer {...customerProps} />}
                                     {service.active && <Service {...serviceProps} />}
-                                    {service.quote && <ViewQuote {...quoteProps} />}
+                                    {service.quote && <ViewQuote {...quoteProps} existingCustomer={false} />}
                                 </> :
                                 <>
-                                    {!service.active && !service.quote && <ChooseCustomer setOption={setOption} />}
-                                    {/* {service.active && <Service {...serviceProps} />}
-                                    {service.quote && <ViewQuote {...quoteProps} />} */}
+                                    {!service.active && !service.quote && <ChooseCustomer setOption={setOption} setCustomerInfo={setCustomerInputs} setService={setService} service={service} />}
+                                    {service.active && customerInputs.id && <Service {...serviceProps} />}
+                                    {service.quote && <ViewQuote {...quoteProps} existingCustomer={true} />}
                                 </>
                             }
                         </>

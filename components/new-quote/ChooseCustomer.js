@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 
-const ChooseCustomer = ({ setOption }) => {
+const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => {
     const [customers, setCustomers] = useState({});
     const [loading, setLoading] = useState(true);
     const [customer, setCustomer] = useState();
@@ -23,6 +23,12 @@ const ChooseCustomer = ({ setOption }) => {
         }
     }
 
+    const handleNext = () => {
+        if (!customer) return;
+        setCustomerInfo(customer);
+        setService({ ...service, active: true });
+    }
+
     return (
         <div className="w-full h-full px-4 m">
             <h1 className="text-3xl font-medium mb-4">Customer</h1>
@@ -32,7 +38,7 @@ const ChooseCustomer = ({ setOption }) => {
                 }
             </div>
             <div className="w-full mt-5">
-                <button className={`w-full bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl mb-2 ${!customer ? "opacity-70 cursor-not-allowed" : ""}`}>Next</button>
+                <button className={`w-full bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl mb-2 ${!customer ? "opacity-70 cursor-not-allowed" : ""}`} onClick={() => handleNext()}>Next</button>
                 <button className={`w-full bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => setOption({ active: true, quote: false })}>Back</button>
             </div>
         </div>
@@ -63,8 +69,8 @@ const Customer = (props) => {
             <div className="">
                 <p className="font-medium">Latest Quote:</p>
                 <div className="ml-4">
-                    <p>Name: {quotes[0].roomName}</p>
-                    <p>Total: {quotes[0].total}</p>
+                    <p>Name: {quotes[quotes.length - 1].roomName}</p>
+                    <p>Total: {quotes[quotes.length - 1].total}</p>
                 </div>
             </div>
         </div>

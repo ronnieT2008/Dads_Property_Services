@@ -3,7 +3,7 @@ import axios from "axios";
 import { Router, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ViewQuote = ({ customerInputs, serviceInputs, service, setService }) => {
+const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existingCustomer }) => {
     const [quote, setQuote] = useState(null);
     const router = useRouter();
 
@@ -76,16 +76,20 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService }) => {
 
     const newQuote = async () => {
         try {
-            const customer = {
-                name: customerInputs.name,
-                phone: customerInputs.phone,
-                address: customerInputs.address,
-                quotes: [quote],
-            };
+            if (!existingCustomer) {
+                const customer = {
+                    name: customerInputs.name,
+                    phone: customerInputs.phone,
+                    address: customerInputs.address,
+                    quotes: [quote],
+                };
 
-            const res = await axios.post("/api/customer/new", customer);
-
-            if (res.status === 200) router.push("/dashboard");
+                const res = await axios.post("/api/customer/new", customer);
+                if (res.status === 200) router.push("/dashboard");
+            } else {
+                const res = await axios.post("/api/customer/quote/add", { customer: customerInputs, quote });
+                // if (res.status === 200) router.push("/dashboard");
+            }
 
         } catch (err) {
             console.log(err);
