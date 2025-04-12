@@ -33,7 +33,7 @@ export default function Page() {
             <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-10 overflow-auto">
                 <h1 className="text-3xl font-medium mb-10">Welcome Back 👋</h1>
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-10">
-                    {quotes.map((quote, index) => <Quote key={index} {...quote} />)}
+                    {quotes.map((quote, index) => index <= 5 && <Quote key={index} {...quote} />)}
                 </div>
             </main>
         </>
