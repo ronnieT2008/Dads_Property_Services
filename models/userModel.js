@@ -11,7 +11,8 @@ const customerSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
-    customers: { type: [customerSchema], default: [] }
+    customers: { type: [customerSchema], default: [] },
+    quotes: { type: [mongoose.Schema.Types.Mixed], default: [] }
 });
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);

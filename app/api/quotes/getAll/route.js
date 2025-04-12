@@ -13,7 +13,9 @@ export const GET = async (req) => {
         const user = await User.findOne({ _id: id });
         if (!user) return NextResponse.json({ message: "User does not exist!" }, { status: 400 });
 
-        return NextResponse.json({ message: "Customer fetched successfully!", customers: user.customers }, { status: 200 });
+        const quotes = user.quotes.reverse();
+
+        return NextResponse.json({ message: "Quotes fetched successfully!", quotes }, { status: 200 });
     } catch (err) {
         console.log(err);
         return NextResponse.error();

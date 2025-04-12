@@ -11,19 +11,32 @@ export const POST = async (req) => {
         const { customer, quote } = await req.json();
         const id = await getTokenData(req);
 
+        const quoteId = new mongoose.Types.ObjectId()
+
         const updateResult = await User.updateOne(
             { _id: id, "customers.id": customer.id },
             {
                 $push: {
                     "customers.$.quotes": {
                         ...quote,
-                        id: new mongoose.Types.ObjectId(),
+                        id: quoteId,
                     },
                 },
             }
         );
 
-        console.log("Update result:", updateResult);
+        await User.updateOne(
+            { _id: id },
+            {
+                $push: {
+                    quotes: {
+                        ...quote,
+                        id: quoteId,
+                        customerId: customer.id,
+                    },
+                },
+            }
+        );
 
         if (updateResult.modifiedCount === 0) {
             return NextResponse.json(
@@ -33,7 +46,7 @@ export const POST = async (req) => {
         }
 
         return NextResponse.json(
-            { message: "Customer updated successfully!" },
+            { message: "Quote added successfully!" },
             { status: 200 }
         );
     } catch (err) {
