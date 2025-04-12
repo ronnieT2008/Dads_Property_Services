@@ -88,7 +88,7 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
                 if (res.status === 200) router.push("/dashboard");
             } else {
                 const res = await axios.post("/api/customer/quote/add", { customer: customerInputs, quote });
-                // if (res.status === 200) router.push("/dashboard");
+                if (res.status === 200) router.push("/dashboard");
             }
 
         } catch (err) {

@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 
 const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
     const [inputs, setInputs] = useState({
-        roomName: '',
-        ceilingHeight: '',
-        walls: ['', '', '', ''],
+        roomName: 'Living Room',
+        ceilingHeight: '8.5',
+        walls: ['12', '15', '12', '15'],
         ceilingType: 'None',
         doorFrames: '',
         windowFrames: '',
-        doorsNum: '',
-        wallsNum: '',
-        wallsLength: '',
+        doorsNum: '2',
+        wallsNum: '4',
+        wallsLength: '15',
     });
 
     useEffect(() => {

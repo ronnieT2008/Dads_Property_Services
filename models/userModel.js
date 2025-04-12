@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const customerSchema = new mongoose.Schema({
     id: { type: String, required: true },
     name: { type: String, default: "" },
+    address: { type: String, default: "" },
+    phone: { type: String, default: "" },
     quotes: { type: [mongoose.Schema.Types.Mixed], default: [] }
 }, { _id: false });
 

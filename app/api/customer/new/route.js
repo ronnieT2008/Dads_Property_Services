@@ -11,6 +11,9 @@ export const POST = async (req) => {
         const customer = await req.json();
         const id = await getTokenData(req);
 
+        // console.log(customer);
+
+
         const user = await User.findOne({ _id: id });
         if (!user) return NextResponse.json({ message: "User does not exist!" }, { status: 400 });
 

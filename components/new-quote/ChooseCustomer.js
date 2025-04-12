@@ -14,7 +14,7 @@ const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => 
     const getData = async () => {
         try {
             const res = await axios.post("/api/customer/get");
-            console.log(res.data.customers);
+            // console.log(res.data.customers);
 
             if (res.status === 200) setCustomers(res.data.customers);
             setLoading(false);
