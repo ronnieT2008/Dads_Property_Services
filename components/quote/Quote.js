@@ -19,12 +19,25 @@ const Quote = (props) => {
     } = props;
 
     useEffect(() => {
-        // if (search !== "" && !roomName.includes(search)) setShow(false);
-        // if (search === "") setShow(true);
-    }, [search]);
+        if (!search) {
+            setShow(true);
+            return;
+        }
+
+        const lowerSearch = search.toLowerCase();
+
+        const allValues = Object.entries(props)
+            .filter(([key]) => key !== "search")
+            .map(([_, value]) => String(value).toLowerCase());
+
+        const matched = allValues.some(val => val.includes(lowerSearch));
+        setShow(matched);
+    }, [search, props]);
+
+    if (!show) return null;
 
     return (
-        <div className={show ? "bg-white shadow-md border border-slate-300 rounded-lg p-6" : "hidden"}>
+        <div className="bg-white shadow-md border border-slate-300 rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-2">🏠 {roomName}</h2>
             <p className="text-lg font-medium text-gray-800 mb-4">💰 Total: ${parseFloat(total).toFixed(2)}</p>
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-700">

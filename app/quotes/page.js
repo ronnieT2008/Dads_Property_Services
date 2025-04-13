@@ -46,7 +46,7 @@ export default function Page() {
                         <option value="customers">Customer&apos;s</option>
                     </select>
                     <label className="text-xl ml-8 mr-3">Search: </label>
-                    <input type="text" placeholder="Search" className="rounded-md bg-white focus:outline-none text-xl p-3 py-2" value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <input type="text" placeholder={`${orderBy === "customers" ? "Customer Name" : "Search"}`} className="rounded-md bg-white focus:outline-none text-xl p-3 py-2" value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 {
                     loading ?
@@ -57,7 +57,7 @@ export default function Page() {
                         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-10">
                             {orderBy === "most recent" && recentQuotes.map((quote, index) => <Quote key={index} {...quote} search={search} />)}
                             {orderBy === "oldest" && [...recentQuotes].reverse().map((quote, index) => <Quote key={index} {...quote} search={search} />)}
-                            {orderBy === "customers" && customers.map((customer, index) => <Customer key={index} {...customer} search={search} />)}
+                            {orderBy === "customers" && [...customers].reverse().map((customer, index) => <Customer key={index} {...customer} search={search} />)}
                         </div>
                 }
             </main>
