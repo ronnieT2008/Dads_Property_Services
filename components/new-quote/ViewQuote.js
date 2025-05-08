@@ -17,56 +17,74 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
                 doorFrames,
                 windowFrames,
                 doorsNum,
-                wallsNum,
-                wallsLength,
             } = serviceInputs;
 
             const parsedHeight = parseFloat(ceilingHeight) || 0;
-            const wallAreas = walls.map((w) => parseFloat(w) || 0).reduce((a, b) => a + b, 0) * parsedHeight;
-            const ceilingArea = wallAreas > 0 ? wallAreas / walls.length : 0;
 
-            const accentWallArea = (parseFloat(wallsNum) || 0) * (parseFloat(wallsLength) || 0) * parsedHeight;
+            // Parse walls into { length, accent }
+            const parsedWalls = walls.map(w => ({
+                length: parseFloat(w.length) || 0,
+                accent: Boolean(w.accent),
+            }));
 
-            const prices = {
-                wall: 2.5,
-                ceiling: 1.8,
-                trim: 40,
-                door: 60,
-                accentWall: 3.5,
-            };
+            const totalWallLength = parsedWalls.reduce((sum, w) => sum + w.length, 0);
+            const wallArea = totalWallLength * parsedHeight;
 
-            const ceilingTypeMultipliers = {
-                "Flat Ceiling": 1.0,
-                "Cathedral Ceiling": 1.4,
-                "Vaulted Ceiling": 1.5,
-                "Tray Ceiling": 1.2,
-                "Coffered Ceiling": 1.6,
-                "Exposed Beam Ceiling": 1.7,
-                "None": 0,
-            };
+            // 🎨 Wall paint: 2 coats, 350 sq ft per gallon, $60 per gallon
+            const totalWallSqft = wallArea * 2;
+            const wallGallons = Math.ceil(totalWallSqft / 350);
+            const wallPaintCost = wallGallons * 60;
 
-            const ceilingMultiplier = ceilingTypeMultipliers[ceilingType] ?? 0;
+            // 🪞 Trim paint: based on total wall length x height, $25 per quart
+            const trimHeightInInches = parsedHeight * 12;
+            const trimSqFt = (totalWallLength * trimHeightInInches) / 12;
+            const trimQuarts = Math.ceil(trimSqFt / 100);
+            const trimPaintCost = trimQuarts * 25;
 
-            const total =
-                wallAreas * prices.wall +
-                ceilingArea * prices.ceiling * ceilingMultiplier +
-                (parseInt(doorFrames) || 0) * prices.trim +
-                (parseInt(windowFrames) || 0) * prices.trim +
-                (parseInt(doorsNum) || 0) * prices.door +
-                accentWallArea * prices.accentWall;
+            // 🚪 Doors: $200 per painted door
+            const numDoors = parseInt(doorsNum) || 0;
+            const doorCost = numDoors * 200;
+
+            // 🚪🪟 Frames: $100 each (both door + window)
+            const doorFrameCount = parseInt(doorFrames) || 0;
+            const windowFrameCount = parseInt(windowFrames) || 0;
+            const frameCount = doorFrameCount + windowFrameCount;
+            const frameCost = frameCount * 100;
+
+            // 🎨 Accent walls: $3.5 per sq ft, only if accent is true
+            const accentWallArea = parsedWalls
+                .filter(w => w.accent)
+                .reduce((sum, w) => sum + (w.length * parsedHeight), 0);
+            const accentWallCost = accentWallArea * 3.5;
+
+            // 🧱 Ceiling area (assumes rectangular shape from first 2 walls)
+            let ceilingArea = 0;
+            if (parsedWalls.length >= 2) {
+                ceilingArea = parsedWalls[0].length * parsedWalls[1].length;
+            }
+
+            // 🎨 Ceiling paint: 2 coats, 350 sq ft per gallon, $60 per gallon
+            const ceilingGallons = Math.ceil((ceilingArea * 2) / 350);
+            const ceilingPaintCost = ceilingGallons * 60;
+
+            // 💰 Total cost
+            const total = wallPaintCost + trimPaintCost + doorCost + frameCost + accentWallCost + ceilingPaintCost;
 
             setQuote({
                 roomName,
                 ceilingHeight: parsedHeight,
-                ceilingType,
-                doorFrames: parseInt(doorFrames) || 0,
-                windowFrames: parseInt(windowFrames) || 0,
-                doorsNum: parseInt(doorsNum) || 0,
-                wallsNum: parseInt(wallsNum) || 0,
-                wallsLength: parseFloat(wallsLength) || 0,
-                wallArea: wallAreas.toFixed(2),
-                ceilingArea: ceilingArea.toFixed(2),
+                doorFrames: doorFrameCount,
+                windowFrames: windowFrameCount,
+                doorsNum: numDoors,
+                wallsNum: parsedWalls.length,
+                wallsLength: totalWallLength.toFixed(2),
+                wallArea: wallArea.toFixed(2),
+                wallGallons,
+                trimSqFt: trimSqFt.toFixed(2),
+                trimQuarts,
                 accentWallArea: accentWallArea.toFixed(2),
+                ceilingArea: ceilingArea.toFixed(2),
+                ceilingGallons,
                 total: total.toFixed(2),
             });
         }
@@ -97,20 +115,22 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6 py-0">
+        <div className="max-w-3xl h-full mx-auto p-6 py-0">
             <h1 className="text-3xl font-bold mb-6">Quote Summary</h1>
             <div className="space-y-4 text-xl">
                 <p><strong>Room Name:</strong> {serviceInputs.roomName}</p>
                 <p><strong>Wall Area:</strong> {quote?.wallArea} sq ft</p>
-                <p><strong>Ceiling Area:</strong> {quote?.ceilingArea} sq ft</p>
                 <p><strong>Accent Wall Area:</strong> {quote?.accentWallArea} sq ft</p>
+                <p><strong>Ceiling Area:</strong> {quote?.ceilingArea} sq ft</p>
                 <p><strong>Ceiling Type:</strong> {serviceInputs.ceilingType}</p>
                 <p><strong>Door Frames:</strong> {serviceInputs.doorFrames}</p>
                 <p><strong>Window Frames:</strong> {serviceInputs.windowFrames}</p>
                 <p><strong>Doors:</strong> {serviceInputs.doorsNum}</p>
-                <p className="text-2xl font-semibold mt-6">Total Estimate: <span className="text-green-700">${quote?.total} CAD</span></p>
+                <p><strong>Gallons of Paint for Walls:</strong> {quote?.wallGallons} gallon(s)</p>
+                <p><strong>Trim Paint:</strong> {quote?.trimQuarts} quart(s) ({quote?.trimSqFt} sq ft)</p>
             </div>
-            <div className="w-full grid gap-2 mt-2">
+            <div className="w-full grid gap-2 mt-8">
+                <p className="text-2xl font-semibold">Total Estimate: <span className="text-green-700">${quote?.total} CAD</span></p>
                 <button
                     type="button"
                     className="bg-blue-900 hover:bg-blue-950 text-white text-xl py-2 px-4 rounded cursor-pointer" onClick={newQuote}>

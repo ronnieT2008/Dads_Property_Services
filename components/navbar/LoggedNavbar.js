@@ -33,7 +33,7 @@ const Navbar = ({ isTabletOrMobile }) => {
     return (
         <>
             {/* sidenav */}
-            <div className={`absolute inset-0 h-screen w-full xl:w-2/12 ease-in-out duration-300 shadow-md ${sideNav ? "translate-x-0" : "translate-x-[-100%]"} bg-slate-200 pt-25`}>
+            <div className={`absolute z-10 inset-0 h-screen w-full xl:w-2/12 ease-in-out duration-300 shadow-md ${sideNav ? "translate-x-0" : "translate-x-[-100%]"} bg-slate-200 pt-25`}>
                 {navLinks.map(({ name, href }, index) => (
                     <div key={index}>
                         <Link href={href} className={`text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer ${pathname === href ? "bg-slate-300" : ""}`}>
@@ -45,7 +45,7 @@ const Navbar = ({ isTabletOrMobile }) => {
             </div>
 
             {/* top nav */}
-            <nav className="w-full bg-slate-100 p-4 pr-4 shadow-md h-1.5/12 sticky grid grid-cols-2">
+            <nav className="w-full z-20 bg-slate-100 p-4 pr-4 shadow-md h-1.5/12 sticky grid grid-cols-2">
                 {/* sidenav button */}
                 <div className="inline-block">
                     <button type="button" className="cursor-pointer focus:outline-none h-full xl:hidden" onClick={() => setSideNav(!sideNav)}>

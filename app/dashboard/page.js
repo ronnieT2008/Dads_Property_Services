@@ -5,11 +5,13 @@ import { Quote } from "@/components/quote";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1279px)' })
     const [quotes, setQuotes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
         getQuotes();
@@ -24,6 +26,8 @@ export default function Page() {
             setQuotes(res.data.quotes);
             setLoading(false);
         } catch (err) {
+            if (err.status === 500 || err.status === 400) await axios.post("/api/logout");
+            router.refresh();
             console.log(err);
         }
     }
