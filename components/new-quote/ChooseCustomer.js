@@ -14,7 +14,7 @@ const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => 
 
     const getData = async () => {
         try {
-            const res = await axios.get("/api/customer/get");
+            const res = await axios.get("/api/estimate/customer/get");
             if (res.status === 200) setCustomers(res.data.customers);
             setLoading(false);
         } catch (err) {
@@ -69,7 +69,7 @@ const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => 
     )
 }
 
-const Customer = ({ name, phone, address, quotes, isActive, onClick }) => {
+const Customer = ({ name, phone, address, services, isActive, onClick }) => {
     return (
         <div
             className={`w-full bg-white shadow-md border border-slate-300 hover:border-blue-500 transition-all p-4 rounded-lg cursor-pointer grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 ${isActive ? "ring-2 ring-blue-500" : ""}`}
@@ -79,13 +79,13 @@ const Customer = ({ name, phone, address, quotes, isActive, onClick }) => {
                 <p className="text-base font-medium">🧾 Name: <span className="font-normal">{name}</span></p>
                 <p className="text-base font-medium">📞 Phone: <span className="font-normal">{phone}</span></p>
                 <p className="text-base font-medium">🏠 Address: <span className="font-normal">{address}</span></p>
-                <p className="text-sm text-slate-500 mt-1">🗂️ Total Quotes: {quotes.length}</p>
+                <p className="text-sm text-slate-500 mt-1">🗂️ Total Services: {services.length}</p>
             </div>
             <div>
-                <p className="font-semibold mb-1">🆕 Latest Quote:</p>
+                <p className="font-semibold mb-1">🆕 Latest Service:</p>
                 <div className="ml-2 text-sm space-y-1">
-                    <p><span className="font-medium">📌 Room:</span> {quotes[quotes.length - 1]?.roomName}</p>
-                    <p><span className="font-medium">💰 Total:</span> ${quotes[quotes.length - 1]?.total}</p>
+                    <p><span className="font-medium">📌 Room:</span> {services[services.length - 1]?.roomName}</p>
+                    <p><span className="font-medium">💰 Total:</span> ${services[services.length - 1]?.total}</p>
                 </div>
             </div>
         </div>

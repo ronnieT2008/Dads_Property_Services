@@ -8,22 +8,18 @@ connect();
 
 export const POST = async (req) => {
     try {
-        const customer = await req.json();
+        const estimate = await req.json();
         const id = await getTokenData(req);
 
         const user = await User.findOne({ _id: id });
         if (!user) return NextResponse.json({ message: "User does not exist!" }, { status: 400 });
 
-        const newQuote = { ...customer.quotes[0], id: new mongoose.Types.ObjectId() };
-        const newCustomer = { ...customer, quotes: [newQuote], id: new mongoose.Types.ObjectId() };
+        const newEstimates = [...user.estimates, { ...estimate, id: new mongoose.Types.ObjectId(), customerId: new mongoose.Types.ObjectId() }];
 
-        const newCustomers = [...user.customers, newCustomer];
-
-        user.customers = newCustomers;
-        user.quotes = [...user.quotes, { ...newQuote, customerId: newCustomer.id }];
+        user.estimates = newEstimates;
         await user.save();
 
-        return NextResponse.json({ message: "Customer created successfully!" }, { status: 200 });
+        return NextResponse.json({ message: "Estimate created successfully!" }, { status: 200 });
     } catch (err) {
         console.log(err);
         return NextResponse.error();

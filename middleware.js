@@ -27,7 +27,7 @@ export const config = {
         '/',
         '/login',
         '/dashboard',
-        '/quotes',
-        '/new-quote'
+        '/estimates',
+        '/new-estimate'
     ],
 }

@@ -28,9 +28,6 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
         setService({ ...service, active: false });
     }
 
-    console.log(inputs);
-
-
     const handleCreate = () => {
         console.log(inputs);
         setServiceInputs(inputs);
@@ -168,7 +165,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                 </div>
             </div>
             <div className="p-4 grid gap-2">
-                <button className={`bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => handleCreate()}>View Quote</button>
+                <button className={`bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => handleCreate()}>View Estimates</button>
                 <button className={`bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => handleBack()}>Back</button>
             </div>
         </div>

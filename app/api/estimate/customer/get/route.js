@@ -13,9 +13,12 @@ export const GET = async (req) => {
         const user = await User.findOne({ _id: id });
         if (!user) return NextResponse.json({ message: "User does not exist!" }, { status: 400 });
 
-        const quotes = user.quotes.reverse();
+        const customers = user.estimates;
+        // user.estimates.forEach((customer) => {
+        //     customers.push({ name: customer.name, phone: customer.phone, address: customer.address, id: customer.id.toString() });
+        // });
 
-        return NextResponse.json({ message: "Quotes fetched successfully!", quotes }, { status: 200 });
+        return NextResponse.json({ message: "Customer fetched successfully!", customers }, { status: 200 });
     } catch (err) {
         console.log(err);
         return NextResponse.error();

@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/components/navbar/LoggedNavbar";
-import { Quote } from "@/components/quote";
+import { Estimate } from "@/components/quote";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -19,11 +19,10 @@ export default function Page() {
 
     const getQuotes = async () => {
         try {
-            const res = await axios.get(`/api/quotes/getAll`);
+            const res = await axios.get(`/api/estimate/getAll`);
+            console.log(res.data);
 
-            if (res.status !== 200) await axios.post("/api/logout");
-
-            setQuotes(res.data.quotes);
+            setQuotes(res.data.estimates);
             setLoading(false);
         } catch (err) {
             if (err.status === 500 || err.status === 400) await axios.post("/api/logout");
@@ -44,7 +43,7 @@ export default function Page() {
                         </div>
                         :
                         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-10">
-                            {quotes.map((quote, index) => index <= 5 && <Quote key={index} {...quote} />)}
+                            {quotes.map((quote, index) => index <= 5 && <Estimate key={index} {...quote} />)}
                         </div>
                 }
             </main>

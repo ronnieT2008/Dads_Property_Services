@@ -95,20 +95,21 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
     const newQuote = async () => {
         try {
             if (!existingCustomer) {
-                const customer = {
+                const newEstimate = {
                     name: customerInputs.name,
                     phone: customerInputs.phone,
                     address: customerInputs.address,
-                    quotes: [quote],
+                    status: "RFA",
+                    services: [{ ...quote, serviceType: "painting" }],
                 };
 
-                const res = await axios.post("/api/customer/new", customer);
+                const res = await axios.post("/api/estimate/customer/new", newEstimate);
                 if (res.status === 200) router.push("/dashboard");
             } else {
-                const res = await axios.post("/api/customer/quote/add", { customer: customerInputs, quote });
+                const service = { ...quote, serviceType: "painting", status: "RFA" };
+                const res = await axios.post("/api/estimate/new", { estimate: { ...customerInputs, status: "RFA" }, service });
                 if (res.status === 200) router.push("/dashboard");
             }
-
         } catch (err) {
             console.log(err);
         }

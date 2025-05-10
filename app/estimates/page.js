@@ -1,15 +1,14 @@
 "use client";
 
 import Navbar from "@/components/navbar/LoggedNavbar";
-import { Quote, Customer } from "@/components/quote";
+import { Estimate, Customer } from "@/components/quote";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export default function Page() {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1279px)' })
-    const [recentQuotes, setRecentQuotes] = useState([]);
-    const [customers, setCustomers] = useState([]);
+    const [estimates, setEstimates] = useState([]);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
     const [orderBy, setOrderBy] = useState("most recent");
@@ -20,13 +19,11 @@ export default function Page() {
 
     const getData = async () => {
         try {
-            const quotesRes = await axios.get(`/api/quotes/getAll`);
-            const customersRes = await axios.get(`/api/customer/get`);
+            const quotesRes = await axios.get(`/api/estimate/getAll`);
 
-            if (quotesRes.status !== 200 || customersRes.status !== 200) await axios.post("/api/logout");
+            if (quotesRes.status !== 200) await axios.post("/api/logout");
 
-            setRecentQuotes(quotesRes.data.quotes);
-            setCustomers(customersRes.data.customers);
+            setEstimates(quotesRes.data.estimates);
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -55,9 +52,9 @@ export default function Page() {
                         </div>
                         :
                         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-10">
-                            {orderBy === "most recent" && recentQuotes.map((quote, index) => <Quote key={index} {...quote} search={search} />)}
-                            {orderBy === "oldest" && [...recentQuotes].reverse().map((quote, index) => <Quote key={index} {...quote} search={search} />)}
-                            {orderBy === "customers" && [...customers].reverse().map((customer, index) => <Customer key={index} {...customer} search={search} />)}
+                            {orderBy === "oldest" && estimates.map((quote, index) => <Estimate key={index} {...quote} search={search} />)}
+                            {orderBy === "most recent" && [...estimates].reverse().map((quote, index) => <Estimate key={index} {...quote} search={search} />)}
+                            {orderBy === "customers" && [...estimates].reverse().map((estimates, index) => <Customer key={index} {...estimates} search={search} />)}
                         </div>
                 }
             </main>

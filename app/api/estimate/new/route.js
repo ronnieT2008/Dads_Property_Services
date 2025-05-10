@@ -8,31 +8,25 @@ connect();
 
 export const POST = async (req) => {
     try {
-        const { customer, quote } = await req.json();
+        const { estimate, service } = await req.json();
         const id = await getTokenData(req);
 
-        const quoteId = new mongoose.Types.ObjectId()
+        const serviceId = new mongoose.Types.ObjectId()
 
         const updateResult = await User.updateOne(
-            { _id: id, "customers.id": customer.id },
             {
-                $push: {
-                    "customers.$.quotes": {
-                        ...quote,
-                        id: quoteId,
+                _id: id,
+                estimates: {
+                    $elemMatch: {
+                        id: new mongoose.Types.ObjectId(estimate.id),
                     },
                 },
-            }
-        );
-
-        await User.updateOne(
-            { _id: id },
+            },
             {
                 $push: {
-                    quotes: {
-                        ...quote,
-                        id: quoteId,
-                        customerId: customer.id,
+                    "estimates.$.services": {
+                        ...service,
+                        id: serviceId,
                     },
                 },
             }
@@ -46,7 +40,7 @@ export const POST = async (req) => {
         }
 
         return NextResponse.json(
-            { message: "Quote added successfully!" },
+            { message: "Service added successfully!" },
             { status: 200 }
         );
     } catch (err) {

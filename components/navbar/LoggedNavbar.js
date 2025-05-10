@@ -11,13 +11,13 @@ export const navLinks = [
         src: "/dashboard.svg"
     },
     {
-        name: "View Quotes",
-        href: "/quotes",
+        name: "View Estimates",
+        href: "/estimates",
         src: "/history.svg"
     },
     {
-        name: "New Quote",
-        href: "/new-quote",
+        name: "New Estimate",
+        href: "/new-estimate",
         src: "/new_outline.svg"
     },
 ]
@@ -58,8 +58,8 @@ const Navbar = ({ isTabletOrMobile }) => {
 
                 {/* add quote button */}
                 <div className="inline-block">
-                    <Link href="/new-quote" className="focus:outline-none h-full">
-                        <Image src={`${pathname === "/new-quote" ? "/new_fill.svg" : "/new_outline.svg"}`} width={40} height={40} alt="burger" onMouseOver={(e) => { pathname !== "new_quote" && (e.target.src = "/new_fill.svg") }} className="ml-auto my-auto" />
+                    <Link href="/new-estimate" className="focus:outline-none h-full">
+                        <Image src={`${pathname === "/new-estimate" ? "/new_fill.svg" : "/new_outline.svg"}`} width={40} height={40} alt="burger" onMouseOver={(e) => { pathname !== "new_quote" && (e.target.src = "/new_fill.svg") }} className="ml-auto my-auto" />
                     </Link>
                 </div>
             </nav >
