@@ -1,6 +1,6 @@
 import Customer from "./Customer";
 import ChooseCustomer from "./ChooseCustomer";
 import Service from "./Service";
-import ViewQuote from "./ViewQuote";
+import ViewEstimate from "./ViewEstimate";
 
-export { Customer, ChooseCustomer, Service, ViewQuote };
+export { Customer, ChooseCustomer, Service, ViewEstimate };

@@ -56,7 +56,7 @@ const Navbar = ({ isTabletOrMobile }) => {
                     </div>
                 </div>
 
-                {/* add quote button */}
+                {/* add estimate button */}
                 <div className="inline-block">
                     <Link href="/new-estimate" className="focus:outline-none h-full">
                         <Image src={`${pathname === "/new-estimate" ? "/new_fill.svg" : "/new_outline.svg"}`} width={40} height={40} alt="burger" onMouseOver={(e) => { pathname !== "new_quote" && (e.target.src = "/new_fill.svg") }} className="ml-auto my-auto" />

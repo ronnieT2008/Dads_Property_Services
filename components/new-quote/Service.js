@@ -31,7 +31,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
     const handleCreate = () => {
         console.log(inputs);
         setServiceInputs(inputs);
-        setService({ ...service, active: false, quote: true });
+        setService({ ...service, active: false, estimate: true });
     }
 
     return (

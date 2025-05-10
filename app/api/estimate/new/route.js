@@ -44,7 +44,7 @@ export const POST = async (req) => {
             { status: 200 }
         );
     } catch (err) {
-        console.error("Error updating customer quotes:", err);
+        console.error("Error updating customer estimates:", err);
         return NextResponse.error();
     }
 };

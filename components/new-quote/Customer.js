@@ -50,7 +50,7 @@ const Customer = ({ setOption, service, setService, customerInputs, setCustomerI
                     onClick={() => {
                         inputs.name && inputs.address && inputs.phone && service && handleNext();
                     }}>Next</button>
-                <button className={`bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => setOption({ active: true, quote: false })}>Back</button>
+                <button className={`bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => setOption({ active: true, estimate: false })}>Back</button>
             </div>
         </div>
     )

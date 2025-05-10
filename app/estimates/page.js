@@ -19,13 +19,12 @@ export default function Page() {
 
     const getData = async () => {
         try {
-            const quotesRes = await axios.get(`/api/estimate/getAll`);
+            const res = await axios.get(`/api/estimate/getAll`);
 
-            if (quotesRes.status !== 200) await axios.post("/api/logout");
-
-            setEstimates(quotesRes.data.estimates);
+            setEstimates(res.data.estimates);
             setLoading(false);
         } catch (err) {
+            if (err.status === 500) await axios.post("/api/logout");
             console.log(err);
         }
     }
@@ -34,7 +33,7 @@ export default function Page() {
         <>
             <Navbar isTabletOrMobile={isTabletOrMobile} />
             <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-10 overflow-auto">
-                <h1 className="text-3xl font-medium mb-6">View Quotes</h1>
+                <h1 className="text-3xl font-medium mb-6">View Estimates</h1>
                 <div className="w-full bg-slate-100 shadow mb-6 p-3 px-6 rounded">
                     <label className="text-xl mr-5">Order By:</label>
                     <select className="rounded-md bg-white focus:outline-none text-xl p-3 py-2" value={orderBy} onChange={(e) => setOrderBy(e.target.value)}>
@@ -52,8 +51,8 @@ export default function Page() {
                         </div>
                         :
                         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-10">
-                            {orderBy === "oldest" && estimates.map((quote, index) => <Estimate key={index} {...quote} search={search} />)}
-                            {orderBy === "most recent" && [...estimates].reverse().map((quote, index) => <Estimate key={index} {...quote} search={search} />)}
+                            {orderBy === "oldest" && estimates.map((estimate, index) => <Estimate key={index} {...estimate} search={search} />)}
+                            {orderBy === "most recent" && [...estimates].reverse().map((estimate, index) => <Estimate key={index} {...estimate} search={search} />)}
                             {orderBy === "customers" && [...estimates].reverse().map((estimates, index) => <Customer key={index} {...estimates} search={search} />)}
                         </div>
                 }

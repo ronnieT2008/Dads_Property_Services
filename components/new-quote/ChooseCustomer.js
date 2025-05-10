@@ -60,7 +60,7 @@ const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => 
                 </button>
                 <button
                     className="w-full bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl"
-                    onClick={() => setOption({ active: true, quote: false })}
+                    onClick={() => setOption({ active: true, estimate: false })}
                 >
                     Back
                 </button>

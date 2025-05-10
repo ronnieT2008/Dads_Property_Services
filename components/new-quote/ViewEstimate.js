@@ -3,8 +3,8 @@ import axios from "axios";
 import { Router, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existingCustomer }) => {
-    const [quote, setQuote] = useState(null);
+const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, existingCustomer }) => {
+    const [estimate, setEstimate] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -70,7 +70,7 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
             // 💰 Total cost
             const total = wallPaintCost + trimPaintCost + doorCost + frameCost + accentWallCost + ceilingPaintCost;
 
-            setQuote({
+            setEstimate({
                 roomName,
                 ceilingHeight: parsedHeight,
                 doorFrames: doorFrameCount,
@@ -92,7 +92,7 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
 
     if (!serviceInputs) return <p className="p-6 text-xl">No service input found.</p>;
 
-    const newQuote = async () => {
+    const newEstimate = async () => {
         try {
             if (!existingCustomer) {
                 const newEstimate = {
@@ -100,13 +100,13 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
                     phone: customerInputs.phone,
                     address: customerInputs.address,
                     status: "RFA",
-                    services: [{ ...quote, serviceType: "painting" }],
+                    services: [{ ...estimate, serviceType: "painting" }],
                 };
 
                 const res = await axios.post("/api/estimate/customer/new", newEstimate);
                 if (res.status === 200) router.push("/dashboard");
             } else {
-                const service = { ...quote, serviceType: "painting", status: "RFA" };
+                const service = { ...estimate, serviceType: "painting", status: "RFA" };
                 const res = await axios.post("/api/estimate/new", { estimate: { ...customerInputs, status: "RFA" }, service });
                 if (res.status === 200) router.push("/dashboard");
             }
@@ -117,29 +117,29 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
 
     return (
         <div className="max-w-3xl h-full mx-auto p-6 py-0">
-            <h1 className="text-3xl font-bold mb-6">Quote Summary</h1>
+            <h1 className="text-3xl font-bold mb-6">Estimate Summary</h1>
             <div className="space-y-4 text-xl">
                 <p><strong>Room Name:</strong> {serviceInputs.roomName}</p>
-                <p><strong>Wall Area:</strong> {quote?.wallArea} sq ft</p>
-                <p><strong>Accent Wall Area:</strong> {quote?.accentWallArea} sq ft</p>
-                <p><strong>Ceiling Area:</strong> {quote?.ceilingArea} sq ft</p>
+                <p><strong>Wall Area:</strong> {estimate?.wallArea} sq ft</p>
+                <p><strong>Accent Wall Area:</strong> {estimate?.accentWallArea} sq ft</p>
+                <p><strong>Ceiling Area:</strong> {estimate?.ceilingArea} sq ft</p>
                 <p><strong>Ceiling Type:</strong> {serviceInputs.ceilingType}</p>
                 <p><strong>Door Frames:</strong> {serviceInputs.doorFrames}</p>
                 <p><strong>Window Frames:</strong> {serviceInputs.windowFrames}</p>
                 <p><strong>Doors:</strong> {serviceInputs.doorsNum}</p>
-                <p><strong>Gallons of Paint for Walls:</strong> {quote?.wallGallons} gallon(s)</p>
-                <p><strong>Trim Paint:</strong> {quote?.trimQuarts} quart(s) ({quote?.trimSqFt} sq ft)</p>
+                <p><strong>Gallons of Paint for Walls:</strong> {estimate?.wallGallons} gallon(s)</p>
+                <p><strong>Trim Paint:</strong> {estimate?.trimQuarts} quart(s) ({estimate?.trimSqFt} sq ft)</p>
             </div>
             <div className="w-full grid gap-2 mt-8">
-                <p className="text-2xl font-semibold">Total Estimate: <span className="text-green-700">${quote?.total} CAD</span></p>
+                <p className="text-2xl font-semibold">Estimate Total: <span className="text-green-700">${estimate?.total} CAD</span></p>
                 <button
                     type="button"
-                    className="bg-blue-900 hover:bg-blue-950 text-white text-xl py-2 px-4 rounded cursor-pointer" onClick={newQuote}>
-                    Create Quote
+                    className="bg-blue-900 hover:bg-blue-950 text-white text-xl py-2 px-4 rounded cursor-pointer" onClick={newEstimate}>
+                    Create Estimate
                 </button>
                 <button
                     className="bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded cursor-pointer text-xl"
-                    onClick={() => setService({ ...service, active: true, quote: false })}>
+                    onClick={() => setService({ ...service, active: true, estimate: false })}>
                     Back
                 </button>
             </div>
@@ -147,5 +147,4 @@ const ViewQuote = ({ customerInputs, serviceInputs, service, setService, existin
     );
 };
 
-
-export default ViewQuote
+export default ViewEstimate
