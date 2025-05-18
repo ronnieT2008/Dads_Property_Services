@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
     const [inputs, setInputs] = useState({
         roomName: 'Living Room',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam inventore perspiciatis quae neque sunt corporis blanditiis dolor officiis nam excepturi!',
         ceilingHeight: '8.5',
         walls: [{ length: '12', accent: false }, { length: '15', accent: false }, { length: '12', accent: false }, { length: '15', accent: false }],
         ceilingType: 'Flat Ceiling',
@@ -47,6 +48,15 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                     />
                 </div>
                 <div className="mt-4">
+                    <label className="text-xl">Description:</label>
+                    <textarea
+                        rows="4"
+                        className="rounded-md bg-white focus:outline-none text-xl px-3 py-2 mt-4 w-full"
+                        value={inputs.description}
+                        onChange={(e) => setInputs({ ...inputs, description: e.target.value })}
+                    />
+                </div>
+                <div className="mt-1">
                     <label className="text-xl">Ceiling Height:</label>
                     <input
                         className="rounded-md bg-white focus:outline-none text-xl px-3 py-2 mt-2 ml-4"

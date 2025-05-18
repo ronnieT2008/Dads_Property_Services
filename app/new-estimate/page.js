@@ -1,8 +1,8 @@
 "use client";
 
 import Navbar from "@/components/navbar/LoggedNavbar";
-import { Customer, ChooseCustomer, Service, ViewEstimate } from "@/components/new-quote";
-import { useEffect, useState } from "react";
+import { Customer, ChooseCustomer, Service, ViewEstimate } from "@/components/new-estimate";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export default function Page() {

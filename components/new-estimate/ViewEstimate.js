@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import mongoose from "mongoose";
 import { Router, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -11,6 +12,7 @@ const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, exis
         if (serviceInputs) {
             const {
                 roomName,
+                description,
                 ceilingHeight,
                 walls,
                 ceilingType,
@@ -72,6 +74,7 @@ const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, exis
 
             setEstimate({
                 roomName,
+                description,
                 ceilingHeight: parsedHeight,
                 doorFrames: doorFrameCount,
                 windowFrames: windowFrameCount,
@@ -100,13 +103,13 @@ const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, exis
                     phone: customerInputs.phone,
                     address: customerInputs.address,
                     status: "RFA",
-                    services: [{ ...estimate, serviceType: "painting" }],
+                    services: [{ ...estimate, serviceType: "painting", id: new mongoose.Types.ObjectId() }],
                 };
 
                 const res = await axios.post("/api/estimate/customer/new", newEstimate);
                 if (res.status === 200) router.push("/dashboard");
             } else {
-                const service = { ...estimate, serviceType: "painting", status: "RFA" };
+                const service = { ...estimate, serviceType: "painting", status: "RFA", id: new mongoose.Types.ObjectId() };
                 const res = await axios.post("/api/estimate/new", { estimate: { ...customerInputs, status: "RFA" }, service });
                 if (res.status === 200) router.push("/dashboard");
             }

@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/components/navbar/LoggedNavbar";
-import { Estimate } from "@/components/quote";
+import { Estimate } from "@/components/estimate";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";

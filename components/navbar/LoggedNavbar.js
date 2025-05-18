@@ -52,7 +52,7 @@ const Navbar = ({ isTabletOrMobile }) => {
                         <Image src="/burger.svg" width={40} height={40} alt="burger" className="my-auto" />
                     </button>
                     <div className="hidden xl:inline">
-                        <Image src="/logo.png" width={80} height={80} alt="logo" className="ml-16" />
+                        <Image src="/logo.png" width={80} height={80} alt="logo" className="ml-22" />
                     </div>
                 </div>
 

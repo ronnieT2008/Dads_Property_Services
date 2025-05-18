@@ -32,7 +32,7 @@ const Customer = ({ setOption, service, setService, customerInputs, setCustomerI
                 </div>
             </div>
             <div className="px-4 mt-8">
-                <h1 className="text-3xl font-medium">Customer</h1>
+                <h1 className="text-3xl font-medium">Service</h1>
                 <div className="grid xl:grid-cols-3 h-4/12 xl:gap-5">
                     <div className={`mt-8 w-full rounded-md grid place-items-center cursor-pointer py-2 ${service.type === "painting" ? "bg-blue-950 text-white" : "bg-slate-50"}`}>
                         <h1 className="text-2xl font-medium mb-1" id="painting" onClick={() => setService({ ...service, service: "painting" })}>Painting</h1>
