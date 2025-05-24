@@ -159,7 +159,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                         />
                     </div>
                 </div>
-                <div className="mt-6">
+                {/* <div className="mt-6">
                     <div>
                         <label className="text-xl mb-4 mr-4 font-medium">Measurements: </label>
                     </div>
@@ -175,7 +175,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                             onChange={(e) => setInputs({ ...inputs, wallsLength: e.target.value })}
                         />
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="p-4 grid gap-2">
                 <button className={`bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => handleCreate()}>View Estimates</button>

@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import PaintingCalculator from "@/components/calculators/PaintingCalculator";
-import { set } from "mongoose";
 
 const Page = ({ params }) => {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1279px)' })
@@ -24,6 +23,7 @@ const Page = ({ params }) => {
             const { id } = await params;
             const res = await axios.post("/api/estimate/service/get", { serviceId: id });
 
+            console.log(res.data);
             setService(res.data.service);
             setEstimate(res.data.estimate);
             setLoading(false);
@@ -69,6 +69,7 @@ const Page = ({ params }) => {
 const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
     const [edit, setEdit] = useState(false);
     const [inputs, setInputs] = useState(service);
+
 
     const handleSave = async () => {
         try {
@@ -122,6 +123,7 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
         const updatedWalls = inputs.walls.filter((_, i) => i !== index);
         setInputs({ ...inputs, walls: updatedWalls });
     };
+
 
     return (
         <div className="pt-4">

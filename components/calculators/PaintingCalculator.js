@@ -28,17 +28,18 @@ const PaintingCalculator = ({ estimate, setEstimate }) => {
         const wallGallons = Math.ceil(totalWallSqft / 350);
         const wallPaintCost = wallGallons * 60;
 
-        // 🪞 Trim paint: based on total wall length x height, $25 per quart
-        const trimHeightInInches = parsedHeight * 12;
-        const trimSqFt = (totalWallLength * trimHeightInInches) / 12;
+        // 🪞 Trim paint: based on total wall length x trim height, $25 per quart
+        const parsedTrimHeight = parseFloat(trimHeight) || 0;
+        const trimSqFt = totalWallLength * parsedTrimHeight;
         const trimQuarts = Math.ceil(trimSqFt / 100);
         const trimPaintCost = trimQuarts * 25;
+
 
         // 🚪 Doors: $200 per painted door
         const numDoors = parseInt(doorsNum) || 0;
         const doorCost = numDoors * 200;
 
-        // 🚪🪟 Frames: $100 each (both door + window)
+        // 🚪🪟 Frames: $100 each for windows & doors
         const doorFrameCount = parseInt(doorFrames) || 0;
         const windowFrameCount = parseInt(windowFrames) || 0;
         const frameCount = doorFrameCount + windowFrameCount;
@@ -69,7 +70,7 @@ const PaintingCalculator = ({ estimate, setEstimate }) => {
             description,
             ceilingHeight: parsedHeight,
             ceilingType,
-            trimHeight, trimHeightInInches,
+            trimHeight: parsedTrimHeight,
             doorFrames: doorFrameCount,
             windowFrames: windowFrameCount,
             doorsNum: numDoors,

@@ -21,6 +21,8 @@ export default function Page() {
     const serviceProps = { service, setService, serviceInputs, setServiceInputs };
     const estimateProps = { customerInputs, serviceInputs, service, setService };
 
+    console.log(serviceInputs);
+
     return (
         <>
             <Navbar isTabletOrMobile={isTabletOrMobile} />
