@@ -3,10 +3,11 @@
 import { Customer, Service } from "@/components/estimate";
 import Navbar from "@/components/navbar/LoggedNavbar";
 import axios from "axios";
-import { set } from "mongoose";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import PaintingCalculator from "@/components/calculators/PaintingCalculator";
+import { set } from "mongoose";
 
 const Page = ({ params }) => {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1279px)' })
@@ -27,6 +28,8 @@ const Page = ({ params }) => {
             setEstimate(res.data.estimate);
             setLoading(false);
         } catch (err) {
+            setLoading(false);
+            setEstimate(null);
             console.log(err);
         }
     }
@@ -48,13 +51,13 @@ const Page = ({ params }) => {
                                     <div>
 
                                         <CustomerFields estimate={estimate} setEstimate={setEstimate} />
-                                        <ServiceFields service={service} setService={setService} estimate={estimate} />
+                                        <ServiceFields service={service} setService={setService} estimate={estimate} setEstimate={setEstimate} />
                                     </div>
                                 </div>
                             </div>
                             :
                             <div className="w-full h-9/12 flex items-center justify-center">
-                                <h2>No Estimate</h2>
+                                <h2>No Service Found</h2>
                             </div>
                 }
             </main>
@@ -63,19 +66,26 @@ const Page = ({ params }) => {
 }
 
 
-const ServiceFields = ({ service, setService, estimate }) => {
+const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
     const [edit, setEdit] = useState(false);
     const [inputs, setInputs] = useState(service);
 
     const handleSave = async () => {
         try {
-            setService(inputs);
-            await axios.post("/api/estimate/service/update", { service: inputs, estimate });
-            setEdit(false);
+            PaintingCalculator({ estimate: inputs, setEstimate: setService });
         } catch (err) {
             console.log(err);
         }
     };
+
+    useEffect(() => {
+        const updateService = async () => {
+            await axios.post("/api/estimate/service/update", { service, estimate });
+            setEdit(false);
+        }
+
+        updateService();
+    }, [service])
 
     const handleCancel = () => {
         setInputs(service);
@@ -97,6 +107,22 @@ const ServiceFields = ({ service, setService, estimate }) => {
         );
     };
 
+    const handleWallChange = (index, key, value) => {
+        const updatedWalls = [...inputs.walls];
+        updatedWalls[index][key] = key === "accent" ? value.target.checked : value.target.value;
+        setInputs({ ...inputs, walls: updatedWalls });
+    };
+
+    const addWall = () => {
+        const updatedWalls = [...(inputs.walls || []), { length: "", accent: false }];
+        setInputs({ ...inputs, walls: updatedWalls });
+    };
+
+    const removeWall = (index) => {
+        const updatedWalls = inputs.walls.filter((_, i) => i !== index);
+        setInputs({ ...inputs, walls: updatedWalls });
+    };
+
     return (
         <div className="pt-4">
             <div className="flex justify-between items-center mb-2">
@@ -111,35 +137,84 @@ const ServiceFields = ({ service, setService, estimate }) => {
                 )}
             </div>
 
-            {/* Main Service Info */}
+            {/* Main Info */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-10 text-xl mt-8 px-6">
                 {renderField("Room", inputs.roomName, "roomName", "🏠")}
-                {renderField("Wall Area", inputs.wallArea, "wallArea", "🧱")}
-                {renderField("Ceiling Area", inputs.ceilingArea, "ceilingArea", "🧱")}
-                {renderField("Type", inputs.serviceType, "serviceType", "📌")}
-                {renderField("Wall Gallons", inputs.wallGallons, "wallGallons", "🖌️")}
-                {renderField("Ceiling Gallons", inputs.ceilingGallons, "ceilingGallons", "🖌️")}
-                {renderField("Total", `$${inputs.total}`, "total", "💵")}
-                {renderField("Trim Sq. Ft", inputs.trimSqFt, "trimSqFt", "🧩")}
-                {renderField("Trim Quarts", inputs.trimQuarts, "trimQuarts", "🖌️")}
-            </div>
-
-            {/* Additional */}
-            <h2 className="text-2xl font-semibold mt-12">📐 Detailed Measurements</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-10 text-xl mt-8 px-6">
+                {renderField("Ceiling Type", inputs.ceilingType, "ceilingType", "📐")}
+                {renderField("Door Frames", inputs.doorFrames, "doorFrames", "🚪")}
                 {renderField("Number of Walls", inputs.wallsNum, "wallsNum", "🧱")}
                 {renderField("Ceiling Height", inputs.ceilingHeight, "ceilingHeight", "📏")}
                 {renderField("Doors", inputs.doorsNum, "doorsNum", "🚪")}
                 {renderField("Wall Length", inputs.wallsLength, "wallsLength", "📏")}
                 {renderField("Window Frames", inputs.windowFrames, "windowFrames", "🪟")}
-                {renderField("Door Frames", inputs.doorFrames, "doorFrames", "🚪")}
-                {renderField("Accent Wall Area", inputs.accentWallArea, "accentWallArea", "🎨")}
+                {renderField("Trim Height", inputs.trimHeight, "trimHeight", "📏")}
             </div>
 
-            <div className="border-t my-6"></div>
+            {/* Wall Details */}
+            <h2 className="text-2xl font-semibold mt-12">🧱 Wall Details</h2>
+            <div className="space-y-4 mt-4 px-6 grid grid-cols-2 gap-x-4">
+                {inputs?.walls?.map((wall, index) => (
+                    <div key={index} className="border p-4 rounded-lg shadow-sm bg-slate-50 mb-4">
+                        <div className="grid grid-cols-2 mb-4">
+                            <div className="flex justify-between items-center">
+                                <h3 className="text-xl font-medium">Wall {index + 1}</h3>
+                            </div>
+                            <div className="flex items-center space-x-3 ml-auto">
+                                {edit ? (
+                                    <>
+                                        <button
+                                            type="button"
+                                            className={`text-sm font-semibold px-3 py-1 rounded-md cursor-pointer ${wall.accent ? 'bg-blue-900 text-white' : 'bg-slate-200'
+                                                }`}
+                                            onClick={() => {
+                                                handleWallChange(index, "accent", { target: { checked: !wall.accent } });
+                                            }}
+                                        >
+                                            Accent
+                                        </button>
+
+                                        <button
+                                            onClick={() => removeWall(index)}
+                                            className="relative cursor-pointer bg-red-400 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center"
+                                            title="Remove Wall"
+                                        >
+                                            ✕
+                                        </button>
+                                    </>
+                                ) : (
+                                    <p>{wall.accent ? "🎨 Accent Wall" : "🧱 Regular Wall"}</p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="flex">
+                            <label className="inline-block font-semibold">📏 Length (ft)</label>
+                            {edit ? (
+                                <input
+                                    type="number"
+                                    className="bg-slate-200 rounded-md py-1 text-center inline-block w-9/12 mx-auto font-semibold focus:outline-none"
+                                    value={wall.length}
+                                    onChange={(e) => handleWallChange(index, "length", e)}
+                                />
+                            ) : (
+                                <p className="text-gray-600 bg-slate-100 rounded-md py-1 text-center inline-block w-9/12 mx-auto font-semibold">{wall.length} ft</p>
+                            )}
+                        </div>
+                    </div>
+                ))}
+                {edit && (
+                    <div className="flex w-full bg-blue-900 rounded-md mb-4">
+                        <button
+                            onClick={addWall}
+                            className="text-xl text-white px-4 py-2 w-full"
+                        >
+                            Add Wall
+                        </button>
+                    </div>
+                )}
+            </div>
 
             {/* Description */}
-            <h2 className="text-3xl font-semibold">💬 Service Description</h2>
+            <h2 className="text-2xl font-semibold mt-12">💬 Service Description</h2>
             <div className="grid grid-cols-1 gap-y-4 gap-x-10 text-xl mt-8 px-6">
                 {edit ? (
                     <textarea
@@ -152,8 +227,23 @@ const ServiceFields = ({ service, setService, estimate }) => {
                     <p>{inputs.description}</p>
                 )}
             </div>
+
+            {/* Extra Info */}
+            <h2 className="text-2xl font-semibold mt-8">🧮 Calculations</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-10 text-xl mt-8 px-6">
+                <p>💵 <strong>Total:</strong> {service.total}</p>
+                <p>🏠 <strong>Ceiling Area:</strong> {service.ceilingArea}</p>
+                <p>📏 <strong>Trim Height (in):</strong> {service.trimHeightInInches}</p>
+                <p>🪣 <strong>Wall Gallons:</strong> {service.wallGallons}</p>
+                <p>🪣 <strong>Ceiling Gallons:</strong> {service.ceilingGallons}</p>
+                <p>📐 <strong>Trim SqFt:</strong> {service.trimSqFt}</p>
+                <p>🧱 <strong>Wall Area:</strong> {service.wallArea}</p>
+                <p>🎨 <strong>Accent Wall Area:</strong> {service.accentWallArea}</p>
+                <p>🧴 <strong>Trim Quarts:</strong> {service.trimQuarts}</p>
+            </div>
         </div>
     );
+
 };
 
 const CustomerFields = ({ estimate }) => {

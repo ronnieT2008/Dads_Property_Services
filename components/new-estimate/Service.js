@@ -35,6 +35,9 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
         setService({ ...service, active: false, estimate: true });
     }
 
+    console.log(inputs);
+
+
     return (
         <div className="w-full h-full overflow-auto">
             <div className="px-4">

@@ -8,6 +8,8 @@ connect();
 export const POST = async (req) => {
     try {
         const { service, estimate } = await req.json();
+        console.log(service);
+
         const id = await getTokenData(req);
 
         const user = await User.findOne({ _id: id });
