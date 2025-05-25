@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import PaintingCalculator from "@/components/calculators/PaintingCalculator";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params }) => {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1279px)' })
@@ -23,8 +24,7 @@ const Page = ({ params }) => {
             const { id } = await params;
             const res = await axios.post("/api/estimate/service/get", { serviceId: id });
 
-            console.log(res.data);
-            setService(res.data.service);
+            setService((!res.data.service) ? res.data.estimate.services.find((ser) => ser.id.toString() === id) : res.data.service);
             setEstimate(res.data.estimate);
             setLoading(false);
         } catch (err) {
@@ -49,7 +49,6 @@ const Page = ({ params }) => {
                             <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 rounded max-h-12/12">
                                 <div className="bg-white shadow-md border border-slate-300 rounded-lg p-6 space-y-4 col-span-1 sm:col-span-2 xl:col-span-3 overflow-auto md:max-h-[75vh]">
                                     <div>
-
                                         <CustomerFields estimate={estimate} setEstimate={setEstimate} />
                                         <ServiceFields service={service} setService={setService} estimate={estimate} setEstimate={setEstimate} />
                                     </div>
@@ -69,7 +68,7 @@ const Page = ({ params }) => {
 const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
     const [edit, setEdit] = useState(false);
     const [inputs, setInputs] = useState(service);
-
+    const router = useRouter();
 
     const handleSave = async () => {
         try {
@@ -124,6 +123,15 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
         setInputs({ ...inputs, walls: updatedWalls });
     };
 
+    const deleteService = async () => {
+        try {
+            const res = await axios.post("/api/estimate/service/delete", { estimate, service });
+
+            if (res.status === 200) router.back();
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <div className="pt-4">
@@ -135,7 +143,15 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
                         <Image src="/delete.svg" width={35} height={35} alt="cancel" className="hover:scale-110 cursor-pointer" onClick={handleCancel} />
                     </div>
                 ) : (
-                    <Image src="/edit.svg" width={35} height={35} alt="edit" className="hover:scale-110 cursor-pointer" onClick={() => setEdit(true)} />
+                    <div className="flex gap-2">
+                        <Image src="/edit.svg" width={35} height={35} alt="edit" className="hover:scale-110 cursor-pointer" onClick={() => setEdit(true)} />
+                        <div
+                            onClick={() => deleteService()}
+                            className="relative cursor-pointer bg-red-400 hover:bg-red-500 text-white rounded-full w-7 h-7 text-xs flex items-center justify-center my-auto"
+                        >
+                            ✕
+                        </div>
+                    </div>
                 )}
             </div>
 

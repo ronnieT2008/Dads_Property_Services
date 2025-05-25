@@ -14,9 +14,6 @@ export const POST = async (req) => {
 
         if (token !== process.env.SIGNUP_TOKEN) return NextResponse.json({ message: "Invalid Params" }, { status: 400 });
 
-        console.log(token);
-
-
         const user = await User.findOne({ email });
         if (user) return NextResponse.json({ message: "User already exists!" }, { status: 400 });
 
