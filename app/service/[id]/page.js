@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import PaintingCalculator from "@/components/calculators/PaintingCalculator";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Page = ({ params }) => {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1279px)' })
@@ -55,8 +56,11 @@ const Page = ({ params }) => {
                                 </div>
                             </div>
                             :
-                            <div className="w-full h-9/12 flex items-center justify-center">
-                                <h2>No Service Found</h2>
+                            <div className="w-full bg-red-200 rounded-md p-4 ">
+                                <h2 className="text-2xl font-medium inline-block">No Service Found</h2>
+                                <Link href="#" className="float-right" onClick={() => window.history.back()}>
+                                    <Image src="/back.svg" width={32} height={32} alt="add" className="inline mr-2 mb-1 bg-red-200 hover:bg-red-300 rounded-full" />
+                                </Link>
                             </div>
                 }
             </main>
@@ -125,9 +129,11 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
 
     const deleteService = async () => {
         try {
-            const res = await axios.post("/api/estimate/service/delete", { estimate, service });
+            if (confirm("Are you sure you want to delete this service?")) {
+                const res = await axios.post("/api/estimate/service/delete", { estimate, service });
 
-            if (res.status === 200) router.back();
+                if (res.status === 200) router.back();
+            }
         } catch (err) {
             console.log(err);
         }

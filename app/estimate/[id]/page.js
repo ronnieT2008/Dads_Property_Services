@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/LoggedNavbar";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
@@ -69,6 +70,7 @@ const Page = ({ params }) => {
 const CustomerFields = ({ estimate, setEstimate }) => {
     const [edit, setEdit] = useState(false);
     const [inputs, setInputs] = useState(estimate);
+    const router = useRouter();
 
     const handleSave = async () => {
         try {
@@ -100,6 +102,19 @@ const CustomerFields = ({ estimate, setEstimate }) => {
         );
     };
 
+    const deleteEstimate = async () => {
+        try {
+            if (confirm("Are you sure you want to delete this estimate?")) {
+                const res = await axios.post("/api/estimate/delete", { estimate });
+
+                if (res.status === 200) router.back();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
     return (
         <div className="border-b pb-4">
             <div>
@@ -113,6 +128,12 @@ const CustomerFields = ({ estimate, setEstimate }) => {
                         :
                         <>
                             <p className="text-3xl font-semibold mb-2 inline-block">🧾 {estimate.name}</p>
+                            <div
+                                onClick={() => deleteEstimate()}
+                                className="relative cursor-pointer bg-red-400 hover:bg-red-500 text-white rounded-full w-8 h-8 text-xs flex items-center justify-center my-auto float-right ml-3"
+                            >
+                                ✕
+                            </div>
                             <Image width={35} height={35} alt="edit" className="block ml-4 float-right hover:scale-110 cursor-pointer" src="/edit.svg" onClick={() => setEdit(!edit)} />
                         </>
                 }
