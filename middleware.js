@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const middleware = async (req) => {
     const path = req.nextUrl.pathname;
-    const isPublicPath = path === '/login' || path === '/';
+    const isPublicPath = path === '/login';
     const token = req.cookies.get('token')?.value || '';
 
     if (!isPublicPath && !token) {

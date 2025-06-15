@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image"
 import { useEffect, useState } from "react";
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from "next/link";
+import axios from "axios";
 
 export const navLinks = [
     {
@@ -25,23 +26,43 @@ export const navLinks = [
 const Navbar = ({ isTabletOrMobile }) => {
     const [sideNav, setSideNav] = useState();
     const pathname = usePathname()
+    const router = useRouter();
 
     useEffect(() => {
         setSideNav(!isTabletOrMobile);
     }, [])
 
+    const handleLogout = async () => {
+        try {
+            const res = await axios.post("/api/logout");
+            if (res.status === 200) router.push("/login");
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <>
             {/* sidenav */}
-            <div className={`absolute z-10 inset-0 h-screen w-full xl:w-2/12 ease-in-out duration-300 shadow-md ${sideNav ? "translate-x-0" : "translate-x-[-100%]"} bg-slate-200 pt-25`}>
-                {navLinks.map(({ name, href }, index) => (
-                    <div key={index}>
-                        <Link href={href} className={`text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer ${pathname === href ? "bg-slate-300" : ""}`}>
-                            <Image src={navLinks[index].src} width={20} height={20} alt={name} className="inline mr-2 mb-1" />
-                            {name}
+            <div className={`absolute z-10 inset-0 h-screen w-full xl:w-2/12 ease-in-out duration-300 shadow-md grid ${sideNav ? "translate-x-0" : "translate-x-[-100%]"} bg-slate-200 pt-25`}>
+                <div>
+                    {navLinks.map(({ name, href }, index) => (
+                        <div key={index}>
+                            <Link href={href} className={`text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer ${pathname === href ? "bg-slate-300" : ""}`}>
+                                <Image src={navLinks[index].src} width={20} height={20} alt={name} className="inline mr-2 mb-1" />
+                                {name}
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+                <div className="mt-auto">
+                    <div>
+                        <Link href="#" className="text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer" onClick={() => handleLogout()}>
+                            <Image src="/logout.svg" width={20} height={20} alt="logout" className="inline mr-2 mb-1" />
+                            Logout
                         </Link>
                     </div>
-                ))}
+                </div>
             </div>
 
             {/* top nav */}
