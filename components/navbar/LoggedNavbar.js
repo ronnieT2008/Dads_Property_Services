@@ -55,7 +55,7 @@ const Navbar = ({ isTabletOrMobile }) => {
                         </div>
                     ))}
                 </div>
-                <div className="mt-auto">
+                <div className="mt-auto pb-4">
                     <div>
                         <Link href="#" className="text-xl px-5 py-3 w-full block hover:bg-slate-300 cursor-pointer" onClick={() => handleLogout()}>
                             <Image src="/logout.svg" width={20} height={20} alt="logout" className="inline mr-2 mb-1" />
