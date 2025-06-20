@@ -39,9 +39,9 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
             <div className="px-4">
                 <h1 className="text-3xl font-medium mb-8">{service.type[0].toUpperCase() + service.type.slice(1)}</h1>
                 <div className="mt-4">
-                    <label className="text-xl">Room Name:</label>
+                    <label className="text-xl md:mr-7">Room Name:</label>
                     <input
-                        className="rounded-md bg-white focus:outline-none text-xl px-3 py-2 mt-2 ml-7"
+                        className="rounded-md bg-white focus:outline-none text-xl px-3 py-2 mt-2"
                         value={inputs.roomName}
                         onChange={(e) => setInputs({ ...inputs, roomName: e.target.value })}
                     />
@@ -56,9 +56,9 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                     />
                 </div>
                 <div className="mt-1">
-                    <label className="text-xl">Ceiling Height:</label>
+                    <label className="text-xl md:mr-4">Ceiling Height:</label>
                     <input
-                        className="rounded-md bg-white focus:outline-none text-xl px-3 py-2 mt-2 ml-4"
+                        className="rounded-md bg-white focus:outline-none text-xl px-3 py-2 mt-2"
                         value={inputs.ceilingHeight}
                         onChange={(e) => setInputs({ ...inputs, ceilingHeight: e.target.value })}
                     />
@@ -137,8 +137,8 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                         <label className="text-xl mb-4 mr-4 font-medium">Trim: </label>
                     </div>
                     <div>
-                        <label className="text-xl mr-7">Height: </label>
-                        <input type="number" className="rounded-md bg-white focus:outline-none text-xl p-3 ml-10 py-2 mt-2" value={inputs.trimHeight}
+                        <label className="text-xl md:mr-16">Height: </label>
+                        <input type="number" className="rounded-md bg-white focus:outline-none text-xl p-3 py-2 mt-2" value={inputs.trimHeight}
                             onChange={(e) => setInputs({ ...inputs, trimHeight: e.target.value })}
                         />
                     </div>
@@ -146,7 +146,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                 {/* Doors */}
                 <div className="mt-6">
                     <div>
-                        <label className="text-xl mb-4 mr-4 font-medium">Doors: </label>
+                        <label className="text-xl mb-4 font-medium md:mr-4">Doors: </label>
                     </div>
                     <div>
                         <label className="text-xl mr-16">Amount:</label>

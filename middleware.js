@@ -6,6 +6,8 @@ export const middleware = async (req) => {
     const isPublicPath = path === '/login';
     const token = req.cookies.get('token')?.value || '';
 
+    if (path === '/') return NextResponse.redirect(new URL('/dashboard', req.url));
+
     if (!isPublicPath && !token) {
         return NextResponse.redirect(new URL('/login', req.url))
     } else if (isPublicPath && !isTokenExpired(token)) {

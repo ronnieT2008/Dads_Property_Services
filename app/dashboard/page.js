@@ -34,7 +34,7 @@ export default function Page() {
     return (
         <>
             <Navbar isTabletOrMobile={isTabletOrMobile} />
-            <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-10 overflow-auto">
+            <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-5 md:px-10 overflow-auto">
                 <h1 className="text-3xl font-medium mb-10">Welcome Back 👋</h1>
                 {
                     loading ?

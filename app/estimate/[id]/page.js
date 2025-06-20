@@ -33,7 +33,7 @@ const Page = ({ params }) => {
     return (
         <>
             <Navbar isTabletOrMobile={isTabletOrMobile} />
-            <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-10 overflow-auto">
+            <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-5 md:px-10 overflow-auto">
                 <h1 className="text-4xl font-medium mb-10">Estimate</h1>
                 {
                     loading ?
@@ -42,7 +42,7 @@ const Page = ({ params }) => {
                         </div>
                         :
                         estimate ?
-                            <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 rounded max-h-12/12">
+                            <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 rounded h-10/12">
                                 <div className="bg-white shadow-md border border-slate-300 rounded-lg p-6 space-y-4 col-span-1 sm:col-span-2 xl:col-span-3 overflow-auto md:max-h-[75vh]">
                                     <CustomerFields estimate={estimate} setEstimate={setEstimate} />
                                     <div className="grid gap-4">
@@ -62,6 +62,7 @@ const Page = ({ params }) => {
                                 </Link>
                             </div>
                 }
+                <div></div>
             </main>
         </>
     )
