@@ -35,7 +35,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
     }
 
     return (
-        <div className="w-full h-full overflow-auto">
+        <>
             <div className="px-4">
                 <h1 className="text-3xl font-medium mb-8">{service.type[0].toUpperCase() + service.type.slice(1)}</h1>
                 <div className="mt-4">
@@ -177,7 +177,7 @@ const Service = ({ service, setService, serviceInputs, setServiceInputs }) => {
                 <button className={`bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => handleCreate()}>View Estimates</button>
                 <button className={`bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl`} onClick={() => handleBack()}>Back</button>
             </div>
-        </div>
+        </>
     )
 }
 

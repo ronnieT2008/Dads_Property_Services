@@ -25,6 +25,7 @@ export default function Page() {
             setLoading(false);
         } catch (err) {
             if (err.status === 500) await axios.post("/api/logout");
+            router.refresh();
             console.log(err);
         }
     }

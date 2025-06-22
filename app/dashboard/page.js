@@ -20,7 +20,6 @@ export default function Page() {
     const getEstimates = async () => {
         try {
             const res = await axios.get(`/api/estimate/getAll`);
-            console.log(res.data);
 
             setEstimates(res.data.estimates);
             setLoading(false);

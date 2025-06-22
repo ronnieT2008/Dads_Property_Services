@@ -38,8 +38,8 @@ const Page = ({ params }) => {
     return (
         <>
             <Navbar isTabletOrMobile={isTabletOrMobile} />
-            <main className="xl:w-10/12 ml-auto h-11/12 pt-10 xl:pl-14 px-5 md:px-10 overflow-auto">
-                <h1 className="text-4xl font-medium mb-10">Service</h1>
+            <main className="xl:w-10/12 ml-auto h-11/12 pt-5 md:pt-10 xl:pl-14 px-5 md:px-10 overflow-auto">
+                <h1 className="text-4xl font-medium mb-5 md:mb-10">Service</h1>
                 {
                     loading ?
                         <div className="w-full h-9/12 flex items-center justify-center">
@@ -48,7 +48,7 @@ const Page = ({ params }) => {
                         :
                         estimate ?
                             <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 rounded max-h-12/12">
-                                <div className="bg-white shadow-md border border-slate-300 rounded-lg p-6 space-y-4 col-span-1 sm:col-span-2 xl:col-span-3 overflow-auto md:max-h-[75vh]">
+                                <div className="bg-white shadow-md border border-slate-300 rounded-lg p-6 space-y-4 col-span-1 sm:col-span-2 xl:col-span-3 md:overflow-auto md:max-h-[75vh]">
                                     <div>
                                         <CustomerFields estimate={estimate} setEstimate={setEstimate} />
                                         <ServiceFields service={service} setService={setService} estimate={estimate} setEstimate={setEstimate} />
@@ -176,7 +176,7 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
 
             {/* Wall Details */}
             <h2 className="text-2xl font-semibold mt-12">🧱 Wall Details</h2>
-            <div className="space-y-4 mt-4 px-6 grid grid-cols-2 gap-x-4">
+            <div className="md:space-y-4 mt-4 px-6 grid md:grid-cols-2 gap-x-4">
                 {inputs?.walls?.map((wall, index) => (
                     <div key={index} className="border p-4 rounded-lg shadow-sm bg-slate-50 mb-4">
                         <div className="grid grid-cols-2 mb-4">
@@ -206,21 +206,21 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
                                         </button>
                                     </>
                                 ) : (
-                                    <p>{wall.accent ? "🎨 Accent Wall" : "🧱 Regular Wall"}</p>
+                                    <p>{wall.accent ? "🎨 Accent" : "🧱 Regular"}</p>
                                 )}
                             </div>
                         </div>
-                        <div className="flex">
+                        <div className="md:flex">
                             <label className="inline-block font-semibold">📏 Length (ft)</label>
                             {edit ? (
                                 <input
                                     type="number"
-                                    className="bg-slate-200 rounded-md py-1 text-center inline-block w-9/12 mx-auto font-semibold focus:outline-none"
+                                    className="bg-slate-200 rounded-md py-1 text-center inline-block w-full md:w-9/12 mx-auto font-semibold focus:outline-none"
                                     value={wall.length}
                                     onChange={(e) => handleWallChange(index, "length", e)}
                                 />
                             ) : (
-                                <p className="text-gray-600 bg-slate-100 rounded-md py-1 text-center inline-block w-9/12 mx-auto font-semibold">{wall.length} ft</p>
+                                <p className="text-gray-600 bg-slate-100 rounded-md py-1 text-center inline-block w-full md:w-9/12 mx-auto font-semibold">{wall.length} ft</p>
                             )}
                         </div>
                     </div>
@@ -239,11 +239,11 @@ const ServiceFields = ({ service, setService, estimate, setEstimate }) => {
 
             {/* Description */}
             <h2 className="text-2xl font-semibold mt-12">💬 Service Description</h2>
-            <div className="grid grid-cols-1 gap-y-4 gap-x-10 text-xl mt-8 px-6">
+            <div className="grid grid-cols-1 gap-y-4 gap-x-10 text-xl mt-2 md:mt-8 md:px-6">
                 {edit ? (
                     <textarea
                         className="rounded-md bg-slate-100 px-3 py-2 w-full focus:outline-none"
-                        rows={4}
+                        rows={5}
                         value={inputs.description}
                         onChange={(e) => setInputs({ ...inputs, description: e.target.value })}
                     />

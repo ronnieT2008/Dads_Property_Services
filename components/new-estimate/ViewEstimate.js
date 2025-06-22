@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import mongoose from "mongoose";
-import { Router, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PaintingCalculator from "../calculators/PaintingCalculator";
 
@@ -30,18 +30,24 @@ const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, exis
                 if (res.status === 200) router.push("/dashboard");
             } else {
                 const service = { ...estimate, serviceType: "painting", status: "RFA", id: new mongoose.Types.ObjectId() };
-                const res = await axios.post("/api/estimate/new", { estimate: { ...customerInputs, status: "RFA" }, service });
+                const res = await axios.post("/api/estimate/new", {
+                    estimate: { ...customerInputs, status: "RFA" },
+                    service,
+                });
                 if (res.status === 200) router.push("/dashboard");
             }
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     return (
-        <div className="max-w-3xl h-full mx-auto p-6 py-0">
-            <h1 className="text-3xl font-bold mb-6">Estimate Summary</h1>
-            <div className="space-y-4 text-xl">
+        <div className="max-w-3xl h-full mx-auto flex flex-col p-6 space-y-6">
+            {/* Header */}
+            <h1 className="text-3xl font-bold">Estimate Summary</h1>
+
+            {/* Scrollable content */}
+            <div className="flex-1 space-y-4 text-xl">
                 <p><strong>Room Name:</strong> {serviceInputs.roomName}</p>
                 <p><strong>Wall Area:</strong> {estimate?.wallArea} sq ft</p>
                 <p><strong>Accent Wall Area:</strong> {estimate?.accentWallArea} sq ft</p>
@@ -53,16 +59,23 @@ const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, exis
                 <p><strong>Gallons of Paint for Walls:</strong> {estimate?.wallGallons} gallon(s)</p>
                 <p><strong>Trim Paint:</strong> {estimate?.trimQuarts} quart(s) ({estimate?.trimSqFt} sq ft)</p>
             </div>
-            <div className="w-full grid gap-2 mt-8">
-                <p className="text-2xl font-semibold">Estimate Total: <span className="text-green-700">${estimate?.total} CAD</span></p>
+
+            {/* Bottom buttons */}
+            <div className="w-full grid gap-2 pt-4">
+                <p className="text-2xl font-semibold">
+                    Estimate Total: <span className="text-green-700">${estimate?.total} CAD</span>
+                </p>
                 <button
                     type="button"
-                    className="bg-blue-900 hover:bg-blue-950 text-white text-xl py-2 px-4 rounded cursor-pointer" onClick={newEstimate}>
+                    className="bg-blue-900 hover:bg-blue-950 text-white text-xl py-2 px-4 rounded cursor-pointer"
+                    onClick={newEstimate}
+                >
                     Create Estimate
                 </button>
                 <button
                     className="bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded cursor-pointer text-xl"
-                    onClick={() => setService({ ...service, active: true, estimate: false })}>
+                    onClick={() => setService({ ...service, active: true, estimate: false })}
+                >
                     Back
                 </button>
             </div>
@@ -70,4 +83,4 @@ const ViewEstimate = ({ customerInputs, serviceInputs, service, setService, exis
     );
 };
 
-export default ViewEstimate
+export default ViewEstimate;

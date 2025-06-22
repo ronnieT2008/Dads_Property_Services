@@ -2,25 +2,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 
-const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => {
-    const [customers, setCustomers] = useState([]);
-    const [loading, setLoading] = useState(true);
+const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service, customers }) => {
+    const [loading, setLoading] = useState(false);
     const [customer, setCustomer] = useState();
     const [activeIndex, setActiveIndex] = useState(null); // ✅ lifted active index
-
-    useEffect(() => {
-        getData();
-    }, [])
-
-    const getData = async () => {
-        try {
-            const res = await axios.get("/api/estimate/customer/get");
-            if (res.status === 200) setCustomers(res.data.customers);
-            setLoading(false);
-        } catch (err) {
-            console.log(err);
-        }
-    }
 
     const handleNext = () => {
         if (!customer) return;
@@ -29,11 +14,14 @@ const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => 
     }
 
     return (
-        <div className="w-full h-full px-4 m">
+        <div className="flex flex-col h-full">
+            {/* Header */}
             <h1 className="text-3xl font-medium mb-4">Customer</h1>
-            <div className="bg-slate-100 max-h-9/12 h-9/12 rounded-md p-6 overflow-auto">
-                {
-                    !loading && customers.map((cust, index) => (
+
+            {/* Scrollable customer list */}
+            <div className="bg-slate-100 rounded-md p-6 overflow-auto flex-1">
+                {!loading &&
+                    customers.map((cust, index) => (
                         <Customer
                             key={index}
                             {...cust}
@@ -51,15 +39,17 @@ const ChooseCustomer = ({ setOption, setCustomerInfo, setService, service }) => 
                     ))
                 }
             </div>
-            <div className="w-full mt-5">
+
+            {/* Bottom buttons fixed in layout */}
+            <div className="pt-4 space-y-2">
                 <button
-                    className={`w-full bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl mb-2 ${!customer ? "opacity-70 cursor-not-allowed" : ""}`}
+                    className={`w-full bg-blue-900 hover:bg-blue-950 text-white py-2 px-4 rounded-md text-xl ${!customer ? "opacity-70 cursor-not-allowed" : ""}`}
                     onClick={handleNext}
                 >
                     Next
                 </button>
                 <button
-                    className="w-full bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md cursor-pointer float-right text-xl"
+                    className="w-full bg-slate-600 hover:bg-slate-800 text-white py-2 px-4 rounded-md text-xl"
                     onClick={() => setOption({ active: true, estimate: false })}
                 >
                     Back
