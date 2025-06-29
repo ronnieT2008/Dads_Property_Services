@@ -48,8 +48,8 @@ export default function Page() {
     return (
         <>
             <Navbar isTabletOrMobile={isTabletOrMobile} />
-            <main className="grid place-items-center h-full max-h-10/12 md:max-h-11/12 overflow-auto pt-4 md:pb-4 md:w-10/12 md:ml-auto">
-                <div className={`w-11/12 md:w-5/12 h-full pb-4 rounded-md bg-slate-200 shadow-xl overflow-y-auto ${option.active || option.estimate === true ? "h-10/12" : ""}`}>
+            <main className="grid place-items-center h-full max-h-10/12 md:max-h-11/12 overflow-auto pt-4 md:pb-4 w-full xl:w-10/12 lg:ml-auto">
+                <div className={`w-11/12 xl:w-5/12 h-full pb-4 rounded-md bg-slate-200 shadow-xl overflow-y-auto ${option.active || option.estimate === true ? "h-10/12" : ""}`}>
                     {option.active ?
                         <div className="h-full grid grid-rows-2 gap-4 px-4 pt-4">
                             <button className="w-full rounded-md bg-slate-50 hover:bg-slate-100 h-full cursor-pointer text-3xl font-medium" onClick={() => setOption({ active: false, estimate: false })}

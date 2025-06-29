@@ -13,36 +13,27 @@ export const POST = async (req) => {
 
         const serviceId = new mongoose.Types.ObjectId()
 
-        const updateResult = await User.updateOne(
-            {
-                _id: id,
-                estimates: {
-                    $elemMatch: {
-                        id: new mongoose.Types.ObjectId(estimate.id),
-                    },
-                },
-            },
-            {
-                $push: {
-                    "estimates.$.services": {
-                        ...service,
-                        id: serviceId,
-                    },
-                },
-            }
-        );
+        const user = await User.findOne({ _id: id });
+        if (!user) return NextResponse.json({ message: "User does not exist!" }, { status: 400 });
 
-        if (updateResult.modifiedCount === 0) {
-            return NextResponse.json(
-                { message: "Customer not found or no update performed!" },
-                { status: 404 }
-            );
-        }
+        // find estimate index
+        // add new service to esitmate
+        // update estimate
+        // set new estimate array to user.estimates
 
-        return NextResponse.json(
-            { message: "Service added successfully!" },
-            { status: 200 }
-        );
+        const estimateIndex = user.estimates.findIndex((est) => est.id.toString() === estimate.id.toString());
+        if (estimateIndex === -1) return NextResponse.json({ message: "Estimate not found!" }, { status: 404 });
+
+        let newServices = user.estimates[estimateIndex].services;
+        newServices = [...newServices, { ...service, id: serviceId }];
+
+        let newEstimates = user.estimates;
+        newEstimates[estimateIndex].services = newServices;
+
+        user.estimates = newEstimates;
+        await User.updateOne({ _id: id }, { $set: { estimates: newEstimates } });
+
+        return NextResponse.json({ message: "Estimate not found!" }, { status: 200 });
     } catch (err) {
         console.error("Error updating customer estimates:", err);
         return NextResponse.error();
